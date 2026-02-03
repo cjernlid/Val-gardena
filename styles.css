@@ -98,6 +98,16 @@ body {
   margin-right: 0.35rem;
 }
 
+.temp-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.weather-icon {
+  font-size: 1.8rem;
+}
+
 .card .temp {
   font-size: 1.8rem;
   font-weight: 700;
@@ -116,6 +126,13 @@ body {
 .small {
   font-size: 0.8rem;
   color: var(--muted);
+}
+
+.avalanche-level {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: #8a1d0c;
 }
 
 .chip {

@@ -33,13 +33,31 @@ const liftSnapshot = {
 };
 
 const weatherGrid = document.getElementById("weather-grid");
+const conditionIcons = [
+  { match: ["snow"], icon: "❄️" },
+  { match: ["cloud"], icon: "☁️" },
+  { match: ["sun", "clear"], icon: "☀️" },
+  { match: ["rain", "shower"], icon: "🌧️" },
+];
+
+function iconForCondition(condition) {
+  const normalized = condition.toLowerCase();
+  const found = conditionIcons.find((entry) =>
+    entry.match.some((keyword) => normalized.includes(keyword))
+  );
+  return found?.icon ?? "🌤️";
+}
 weatherSlots.forEach((slot) => {
   const card = document.createElement("article");
   card.className = "card";
+  const conditionIcon = iconForCondition(slot.condition);
   card.innerHTML = `
     <h3><span class="icon">⏱️</span>${slot.time}</h3>
-    <p class="temp">${slot.temp}</p>
-    <p class="meta"><span class="icon">🌤️</span>${slot.condition}</p>
+    <div class="temp-row">
+      <span class="icon weather-icon" aria-hidden="true">${conditionIcon}</span>
+      <p class="temp">${slot.temp}</p>
+    </div>
+    <p class="meta">${slot.condition}</p>
     <p class="meta"><span class="icon">💨</span>${slot.wind}</p>
   `;
   weatherGrid.appendChild(card);
