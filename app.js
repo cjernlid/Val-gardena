@@ -37,10 +37,10 @@ weatherSlots.forEach((slot) => {
   const card = document.createElement("article");
   card.className = "card";
   card.innerHTML = `
-    <h3>${slot.time}</h3>
+    <h3><span class="icon">⏱️</span>${slot.time}</h3>
     <p class="temp">${slot.temp}</p>
-    <p class="meta">${slot.condition}</p>
-    <p class="meta">${slot.wind}</p>
+    <p class="meta"><span class="icon">🌤️</span>${slot.condition}</p>
+    <p class="meta"><span class="icon">💨</span>${slot.wind}</p>
   `;
   weatherGrid.appendChild(card);
 });
