@@ -22,7 +22,7 @@ const weatherSlots = [
 const snowSnapshot = {
   top: "110 cm",
   valley: "35 cm",
-  lastSnow: "12 cm",
+  lastSnow: "Loading…",
   nextSnow: "Tonight 6–10 cm",
 };
 
@@ -46,7 +46,11 @@ weatherSlots.forEach((slot) => {
 });
 
 const snowCard = document.getElementById("snow-card");
-if (snowCard) {
+
+function renderSnowCard() {
+  if (!snowCard) {
+    return;
+  }
   snowCard.innerHTML = `
     <p><strong>Top:</strong> ${snowSnapshot.top}</p>
     <p><strong>Valley:</strong> ${snowSnapshot.valley}</p>
@@ -54,6 +58,48 @@ if (snowCard) {
     <p><strong>Next:</strong> ${snowSnapshot.nextSnow}</p>
   `;
 }
+
+async function loadSnowLast12h() {
+  const secedaLat = 46.5833;
+  const secedaLon = 11.7167;
+  const nowcastUrl =
+    "https://dataset.api.hub.geosphere.at/v1/timeseries/forecast/nowcast-v1-15min-1km" +
+    `?lat_lon=${secedaLat},${secedaLon}&parameters=rr&output_format=geojson`;
+
+  try {
+    const response = await fetch(nowcastUrl);
+    if (!response.ok) {
+      throw new Error(`Snowfall request failed: ${response.status}`);
+    }
+
+    const snowData = await response.json();
+    const feature = snowData.features?.[0];
+    const params = feature?.properties?.parameters;
+    const timestamps = snowData.timestamps || [];
+
+    let totalSnowLast12h = 0;
+    if (params?.rr?.data) {
+      const now = new Date();
+      for (let i = 0; i < timestamps.length; i += 1) {
+        const forecastTime = new Date(timestamps[i]);
+        const hoursDiff = (now - forecastTime) / (1000 * 60 * 60);
+        if (hoursDiff >= 0 && hoursDiff <= 12) {
+          totalSnowLast12h += params.rr.data[i] || 0;
+        }
+      }
+    }
+
+    snowSnapshot.lastSnow = `${totalSnowLast12h.toFixed(1)} mm`;
+  } catch (error) {
+    console.error(error);
+    snowSnapshot.lastSnow = "Unavailable";
+  }
+
+  renderSnowCard();
+}
+
+renderSnowCard();
+loadSnowLast12h();
 
 const liftCard = document.getElementById("lift-card");
 if (liftCard) {
