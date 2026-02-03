@@ -1,0 +1,16 @@
+{
+  "name": "Val Gardena Snow Guide",
+  "short_name": "VG Snow",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#0f4c81",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='192' height='192' viewBox='0 0 192 192'><rect width='192' height='192' rx='48' fill='%230f4c81'/><path d='M96 40l16 24h28l-22 16 8 26-30-18-30 18 8-26-22-16h28z' fill='white'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
